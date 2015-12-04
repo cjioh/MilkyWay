@@ -9,14 +9,18 @@ import java.util.Set;
 
 @Entity
 @Table(
-        name = "role"
+        name = "role",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "roleId"),
+                @UniqueConstraint(columnNames = "roleTitle")
+        }
 )
 public class Role {
 
     private Integer roleId;
     private String roleTitle;
     private Set<User> users;
-//123
+
     public Role() {
 
     }
@@ -33,7 +37,7 @@ public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "roleId", nullable = false)
+    @Column(name = "roleId", unique = true, nullable = false)
     public Integer getRoleId() {
         return roleId;
     }
@@ -42,7 +46,7 @@ public class Role {
         this.roleId = roleId;
     }
 
-    @Column(name = "roleTitle", nullable = false)
+    @Column(name = "roleTitle", unique = true, nullable = false)
     public String getRoleTitle() {
         return roleTitle;
     }

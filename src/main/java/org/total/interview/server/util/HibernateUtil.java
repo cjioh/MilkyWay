@@ -5,7 +5,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 
-
 /**
  * Created by pavlo.fandych on 12/3/2015.
  */
@@ -27,4 +26,5 @@ public class HibernateUtil {
     public static void shutdown() {
         getSessionFactory().close();
     }
+
 }

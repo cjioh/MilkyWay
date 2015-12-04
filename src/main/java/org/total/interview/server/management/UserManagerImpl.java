@@ -25,7 +25,8 @@ public class UserManagerImpl implements UserManager {
     private static volatile UserManagerImpl SingletonRef;
     private static final Lock SingletonLock = new ReentrantLock();
 
-    private UserManagerImpl() {}
+    private UserManagerImpl() {
+    }
 
     public static UserManagerImpl getInstance() {
         if (SingletonRef == null) {
@@ -45,99 +46,153 @@ public class UserManagerImpl implements UserManager {
         HibernateUtil.shutdown();
     }
 
-    public Integer addUserByUserName(String userName, Set<Role> roles) {
-        Session session = SESSION_FACTORY.openSession();
-        Transaction tx = null;
-        Integer userID = null;
+//    public Integer addUserByUserName(String userName, Set<Role> roles) {
+//        Session session = SESSION_FACTORY.openSession();
+//        Transaction tx = null;
+//        Integer userID = null;
+//
+//        try {
+//            tx = session.beginTransaction();
+//            User user = new User(userName);
+//            user.setRoles(roles);
+//            userID = (Integer) session.save(user);
+//            tx.commit();
+//        } catch (HibernateException e) {
+//            if (tx != null) {
+//                tx.rollback();
+//            }
+//            LOGGER.error(e, e);
+//        } catch (Exception e) {
+//            LOGGER.error(e, e);
+//        } finally {
+//            session.close();
+//            shutdown();
+//        }
+//        return userID;
+//    }
+//
+//    public List<User> getAllUsers() {
+//        Session session = SESSION_FACTORY.openSession();
+//        Transaction tx = null;
+//
+//        try {
+//            tx = session.beginTransaction();
+//            List users = session.createQuery("FROM User").list();
+//            tx.commit();
+//            return users;
+//        } catch (HibernateException e) {
+//            if (tx != null) {
+//                tx.rollback();
+//            }
+//            LOGGER.error(e, e);
+//        } catch (Exception e) {
+//            LOGGER.error(e, e);
+//        } finally {
+//            session.close();
+//            shutdown();
+//        }
+//        return null;
+//    }
+//
+//    public User updateUserById(Integer userId, User userToUpdate) {
+//        Session session = SESSION_FACTORY.openSession();
+//        Transaction tx = null;
+//
+//        User result = null;
+//        try {
+//            tx = session.beginTransaction();
+//            User userTmp = (User) session.get(User.class, userId);
+//            userTmp.setUserName(userToUpdate.getUserName());
+//            userTmp.setRoles(userToUpdate.getRoles());
+//            session.update(userTmp);
+//            tx.commit();
+//            result = userTmp;
+//        } catch (HibernateException e) {
+//            if (tx != null) {
+//                tx.rollback();
+//            }
+//            LOGGER.error(e, e);
+//        } catch (Exception e) {
+//            LOGGER.error(e, e);
+//        } finally {
+//            session.close();
+//            shutdown();
+//        }
+//        return result;
+//    }
+//
+//    public Boolean deleteUserById(Integer userID) {
+//        Session session = SESSION_FACTORY.openSession();
+//        Transaction tx = null;
+//
+//        Boolean result = null;
+//        try {
+//            tx = session.beginTransaction();
+//            User user = (User) session.get(User.class, userID);
+//            session.delete(user);
+//            tx.commit();
+//            result = true;
+//        } catch (HibernateException e) {
+//            if (tx != null) {
+//                tx.rollback();
+//            }
+//            result = false;
+//            LOGGER.error(e, e);
+//        } catch (Exception e) {
+//            result = false;
+//            LOGGER.error(e, e);
+//        } finally {
+//            session.close();
+//            shutdown();
+//        }
+//        return result;
+//    }
+//
+//    public User getUserById(Integer userID) {
+//        Session session = SESSION_FACTORY.openSession();
+//        Transaction tx = null;
+//
+//        User user = null;
+//        try {
+//            tx = session.beginTransaction();
+//            user = (User) session.get(User.class, userID);
+//            tx.commit();
+//        } catch (HibernateException e) {
+//            if (tx != null) {
+//                tx.rollback();
+//            }
+//            LOGGER.error(e, e);
+//        } catch (Exception e) {
+//
+//            LOGGER.error(e, e);
+//        } finally {
+//            session.close();
+//            shutdown();
+//        }
+//        return user;
+//    }
 
-        try {
-            tx = session.beginTransaction();
-            User user = new User(userName);
-            user.setRoles(roles);
-            userID = (Integer) session.save(user);
-            tx.commit();
-        } catch (HibernateException e) {
-            if (tx != null) {
-                tx.rollback();
-            }
-            LOGGER.error(e, e);
-        } catch (Exception e) {
-            LOGGER.error(e, e);
-        } finally {
-            session.close();
-            shutdown();
-        }
-        return userID;
+    public long addUser(User user) {
+        return 0;
     }
 
     public List<User> getAllUsers() {
-        Session session = SESSION_FACTORY.openSession();
-        Transaction tx = null;
-
-        try {
-            tx = session.beginTransaction();
-            List users = session.createQuery("FROM User").list();
-            tx.commit();
-            return users;
-        } catch (HibernateException e) {
-            if (tx != null) {
-                tx.rollback();
-            }
-            LOGGER.error(e, e);
-        } catch (Exception e) {
-            LOGGER.error(e, e);
-        } finally {
-            session.close();
-            shutdown();
-        }
         return null;
     }
 
-    public void updateUserById(Integer userID, String userName) {
-        Session session = SESSION_FACTORY.openSession();
-        Transaction tx = null;
-
-        try {
-            tx = session.beginTransaction();
-            User user =
-                    (User) session.get(User.class, userID);
-            user.setUserName(userName);
-            session.update(user);
-            tx.commit();
-        } catch (HibernateException e) {
-            if (tx != null) {
-                tx.rollback();
-            }
-            LOGGER.error(e, e);
-        } catch (Exception e) {
-            LOGGER.error(e, e);
-        } finally {
-            session.close();
-            shutdown();
-        }
+    public User updateUser(User user) {
+        return null;
     }
 
-    public void deleteUserById(Integer userID) {
-        Session session = SESSION_FACTORY.openSession();
-        Transaction tx = null;
-
-        try {
-            tx = session.beginTransaction();
-            User user =
-                    (User) session.get(User.class, userID);
-            session.delete(user);
-            tx.commit();
-        } catch (HibernateException e) {
-            if (tx != null) {
-                tx.rollback();
-            }
-            LOGGER.error(e, e);
-        } catch (Exception e) {
-            LOGGER.error(e, e);
-        } finally {
-            session.close();
-            shutdown();
-        }
+    public boolean deleteUserById(long userID) {
+        return false;
     }
 
+    public User getUserById(long userID) {
+        return  null;
+    }
+
+    public User getUserByName(String userName) {
+        return null;
+    }
 }

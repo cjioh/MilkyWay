@@ -1,5 +1,6 @@
 package org.total.interview.server.entity;
 
+import javax.jws.soap.SOAPBinding;
 import javax.persistence.*;
 import java.util.Set;
 
@@ -9,7 +10,11 @@ import java.util.Set;
 
 @Entity
 @Table(
-        name = "User"
+        name = "User",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "userId"),
+                @UniqueConstraint(columnNames = "userName")
+        }
 )
 public class User {
 
@@ -31,9 +36,15 @@ public class User {
         this.roles = roles;
     }
 
+    public User(User user) {
+        this.userId = user.getUserId();
+        this.userName = user.getUserName();
+        this.roles = user.getRoles();
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "userId", nullable = false)
+    @Column(name = "userId", unique = true, nullable = false)
     public Integer getUserId() {
         return userId;
     }
@@ -42,7 +53,7 @@ public class User {
         this.userId = userId;
     }
 
-    @Column(name = "userName", nullable = false)
+    @Column(name = "userName", unique = true, nullable = false)
     public String getUserName() {
         return userName;
     }
@@ -69,4 +80,11 @@ public class User {
         this.roles = roles;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "userId=" + userId +
+                ", userName='" + userName + '\'' +
+                '}';
+    }
 }

@@ -1,20 +1,21 @@
 package org.total.interview.server.management;
 
-import org.total.interview.server.entity.Role;
 import org.total.interview.server.entity.User;
 
 import java.util.List;
-import java.util.Set;
 
-/**
- * Created by pavlo.fandych on 12/3/2015.
- */
 public interface UserManager {
-    public Integer addUserByUserName(String userName, Set<Role> roles);
+
+    public long addUser(User user);
 
     public List<User> getAllUsers();
 
-    public void updateUserById(Integer userID, String userName);
+    public User updateUser(User user);
 
-    public void deleteUserById(Integer userID);
+    public boolean deleteUserById(long userID);
+
+    public User getUserById(long userID);
+
+    public User getUserByName(String userName);
+
 }
