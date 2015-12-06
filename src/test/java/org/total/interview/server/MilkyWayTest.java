@@ -34,16 +34,13 @@ public class MilkyWayTest {
     @Test
     public void insertUserWithRole() throws Exception {
         Set<Role> roles = new HashSet<Role>();
-        roles.add(new Role("admin"));
-        roles.add(new Role("manager"));
         roles.add(new Role("moderator"));
-        roles.add(new Role("user"));
 
         PasswordManager passwordManager = new PasswordManagerImpl();
-        String password = passwordManager.encode("l777Pui1");
+        String password = passwordManager.encode("password");
 
         User user = new User();
-        user.setUserName("Total");
+        user.setUserName("New User");
         user.setPassword(password);
         user.setRoles(roles);
 
