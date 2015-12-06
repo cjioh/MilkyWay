@@ -1,15 +1,23 @@
-<!DOCTYPE web-app PUBLIC
-        "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
-        "http://java.sun.com/dtd/web-app_2_3.dtd" >
-
+<?xml version="1.0" encoding="UTF-8"?>
 <web-app>
-    <display-name>Archetype Created Web Application</display-name>
+
+    <servlet>
+        <servlet-name>registerServlet</servlet-name>
+        <servlet-class>org.total.interview.server.servlet.RegisterServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>registerServlet</servlet-name>
+        <url-pattern>/registration</url-pattern>
+    </servlet-mapping>
     <servlet>
         <servlet-name>authServlet</servlet-name>
-        <servlet-class>org.total.interview.server.AuthServlet</servlet-class>
+        <servlet-class>org.total.interview.server.servlet.AuthServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>authServlet</servlet-name>
         <url-pattern>/authorization</url-pattern>
     </servlet-mapping>
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
 </web-app>

@@ -1,4 +1,4 @@
-package org.total.interview.server.entity;
+package org.total.interview.server.model;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -9,7 +9,7 @@ import java.util.Set;
 
 @Entity
 @Table(
-        name = "role",
+        name = "Role",
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = "roleId"),
                 @UniqueConstraint(columnNames = "roleTitle")
@@ -17,7 +17,7 @@ import java.util.Set;
 )
 public class Role {
 
-    private Integer roleId;
+    private long roleId;
     private String roleTitle;
     private Set<User> users;
 
@@ -29,7 +29,7 @@ public class Role {
         this.roleTitle = roleTitle;
     }
 
-    public Role(Integer roleId, String roleTitle, Set<User> users) {
+    public Role(long roleId, String roleTitle, Set<User> users) {
         this.roleId = roleId;
         this.roleTitle = roleTitle;
         this.users = users;
@@ -38,11 +38,11 @@ public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "roleId", unique = true, nullable = false)
-    public Integer getRoleId() {
+    public long getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(Integer roleId) {
+    public void setRoleId(long roleId) {
         this.roleId = roleId;
     }
 
@@ -62,5 +62,13 @@ public class Role {
 
     public void setUsers(Set<User> users) {
         this.users = users;
+    }
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "roleId=" + roleId +
+                ", roleTitle='" + roleTitle + '\'' +
+                '}';
     }
 }

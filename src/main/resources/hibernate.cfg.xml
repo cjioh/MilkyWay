@@ -7,7 +7,7 @@
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
         <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/HibernateInterview</property>
         <property name="hibernate.connection.username">root</property>
-        <property name="hibernate.connection.password"></property>
+        <property name="hibernate.connection.password">mysqlpass</property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <property name="hibernate.show_sql">true</property>
         <!--<property name="hibernate.hbm2ddl.auto">create</property>-->
@@ -15,7 +15,7 @@
         <property name="show_sql">true</property>
         <property name="format_sql">true</property>
 
-        <mapping class="org.total.interview.server.entity.User" />
-        <mapping class="org.total.interview.server.entity.Role" />
+        <mapping class="org.total.interview.server.model.User" />
+        <mapping class="org.total.interview.server.model.Role" />
     </session-factory>
 </hibernate-configuration>

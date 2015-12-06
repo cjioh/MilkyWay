@@ -1,6 +1,5 @@
-package org.total.interview.server.entity;
+package org.total.interview.server.model;
 
-import javax.jws.soap.SOAPBinding;
 import javax.persistence.*;
 import java.util.Set;
 
@@ -18,38 +17,42 @@ import java.util.Set;
 )
 public class User {
 
-    private Integer userId;
+    private long userId;
     private String userName;
+    private String password;
     private Set<Role> roles;
 
     public User() {
 
     }
 
-    public User(String userName) {
+    public User(String userName, String password) {
         this.userName = userName;
+        this.password = password;
     }
 
-    public User(Integer userId, String userName, Set<Role> roles) {
+    public User(long userId, String userName, String password, Set<Role> roles) {
         this.userId = userId;
         this.userName = userName;
+        this.password = password;
         this.roles = roles;
     }
 
     public User(User user) {
         this.userId = user.getUserId();
         this.userName = user.getUserName();
+        this.password = user.getPassword();
         this.roles = user.getRoles();
     }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "userId", unique = true, nullable = false)
-    public Integer getUserId() {
+    public long getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 
@@ -60,6 +63,15 @@ public class User {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    @Column(name = "password", nullable = false)
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -83,8 +95,9 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "userId=" + userId +
+                "password='" + password + '\'' +
                 ", userName='" + userName + '\'' +
+                ", userId=" + userId +
                 '}';
     }
 }
