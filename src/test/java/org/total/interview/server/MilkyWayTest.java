@@ -12,9 +12,7 @@ import org.total.interview.server.util.HibernateUtil;
 import org.total.interview.server.util.PasswordManager;
 import org.total.interview.server.util.PasswordManagerImpl;
 
-import javax.jws.soap.SOAPBinding;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class MilkyWayTest {
@@ -90,7 +88,12 @@ public class MilkyWayTest {
 
     @Test
     public void assignRole() throws Exception {
-        USER_ROLE_SERVICE.assignRole("user", "Vasya");
+        USER_ROLE_SERVICE.assignRoleByUserNameAndRoleTitle("moderator", "Tiger");
+    }
+
+    @Test
+    public void revokeRole() throws Exception {
+        USER_ROLE_SERVICE.revokeRoleByUserNameAndRoleTitle("admin", "Nika");
     }
 
 }
