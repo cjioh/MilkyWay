@@ -1,11 +1,8 @@
 package org.total.interview.server.model;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
-
-/**
- * Created by pavlo.fandych on 12/3/2015.
- */
 
 @Entity
 @Table(
@@ -85,6 +82,9 @@ public class User {
             }
     )
     public Set<Role> getRoles() {
+        if (this.roles == null) {
+            this.roles = new HashSet<Role>();
+        }
         return roles;
     }
 

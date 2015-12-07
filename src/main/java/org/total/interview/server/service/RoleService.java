@@ -62,7 +62,7 @@ public class RoleService {
         roleDAO.closeCurrentSessionwithTransaction();
     }
 
-    public RoleDAO userDAO() {
+    public RoleDAO roleDAO() {
         return roleDAO;
     }
 }

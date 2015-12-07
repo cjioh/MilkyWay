@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.total.interview.server.model.Role;
 import org.total.interview.server.model.User;
 import org.total.interview.server.service.RoleService;
+import org.total.interview.server.service.UserRoleService;
 import org.total.interview.server.service.UserService;
 import org.total.interview.server.util.HibernateUtil;
 import org.total.interview.server.util.PasswordManager;
@@ -22,6 +23,7 @@ public class MilkyWayTest {
     private static final SessionFactory SESSION_FACTORY = HibernateUtil.getSessionFactory();
     private static final UserService USER_SERVICE = new UserService();
     private static final RoleService ROLE_SERVICE = new RoleService();
+    private static final UserRoleService USER_ROLE_SERVICE = new UserRoleService();
 
     @Test
     public void connectionTest() throws Exception {
@@ -34,18 +36,17 @@ public class MilkyWayTest {
     @Test
     public void insertUserWithRole() throws Exception {
         Set<Role> roles = new HashSet<Role>();
-        roles.add(new Role("moderator"));
+        roles.add(new Role("user"));
 
         PasswordManager passwordManager = new PasswordManagerImpl();
-        String password = passwordManager.encode("password");
+        String password = passwordManager.encode("nika");
 
         User user = new User();
-        user.setUserName("New User");
+        user.setUserName("Nika");
         user.setPassword(password);
         user.setRoles(roles);
 
         USER_SERVICE.persist(user);
-
     }
 
 
@@ -56,7 +57,13 @@ public class MilkyWayTest {
 
     @Test
     public void inserUserWithoutRole() throws Exception {
+        User user = new User();
+        user.setUserName("Vasya");
 
+        PasswordManager passwordManager = new PasswordManagerImpl();
+        user.setPassword(passwordManager.encode("vasya"));
+
+        USER_SERVICE.persist(user);
     }
 
     @Test
@@ -83,13 +90,7 @@ public class MilkyWayTest {
 
     @Test
     public void assignRole() throws Exception {
-        Set<Role> roles = new HashSet<Role>();
-        roles.add(ROLE_SERVICE.findByRoleTitle("user"));
-
-        User user = USER_SERVICE.findByName("Vova");
-        user.setRoles(roles);
-
-        USER_SERVICE.update(user);
+        USER_ROLE_SERVICE.assignRole("user", "Vasya");
     }
 
 }
