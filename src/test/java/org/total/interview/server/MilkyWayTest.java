@@ -2,6 +2,7 @@ package org.total.interview.server;
 
 import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
+import org.junit.Assert;
 import org.junit.Test;
 import org.total.interview.server.model.Role;
 import org.total.interview.server.model.User;
@@ -33,20 +34,17 @@ public class MilkyWayTest {
 
     @Test
     public void insertUserWithRole() throws Exception {
-        Set<Role> roles = new HashSet<Role>();
-        roles.add(new Role("user"));
 
         PasswordManager passwordManager = new PasswordManagerImpl();
-        String password = passwordManager.encode("nika");
 
         User user = new User();
-        user.setUserName("Nika");
-        user.setPassword(password);
-        user.setRoles(roles);
+        user.setUserName("Qwerty");
+        user.setPassword(passwordManager.encode("qwerty"));
 
         USER_SERVICE.persist(user);
-    }
 
+        USER_ROLE_SERVICE.assignRoleByUserNameAndRoleTitle("user", "Qwerty");
+    }
 
     @Test
     public void getAllUsers() throws Exception {
@@ -56,12 +54,20 @@ public class MilkyWayTest {
     @Test
     public void inserUserWithoutRole() throws Exception {
         User user = new User();
-        user.setUserName("Vasya");
+        user.setUserName("Tiger");
 
         PasswordManager passwordManager = new PasswordManagerImpl();
-        user.setPassword(passwordManager.encode("vasya"));
+        user.setPassword(passwordManager.encode("tiger"));
 
         USER_SERVICE.persist(user);
+    }
+
+    @Test
+    public void findNonExistingUser() throws Exception {
+        User user = USER_SERVICE.findByName("NonExisting");
+        LOGGER.info(USER_SERVICE.findByName("NonExisting"));
+        Assert.assertNull(user);
+        user.getUserId();
     }
 
     @Test
@@ -87,6 +93,12 @@ public class MilkyWayTest {
     }
 
     @Test
+    public void getRoleByRoleTitle() throws Exception {
+        Role role = ROLE_SERVICE.findByRoleTitle("user");
+        LOGGER.info(role);
+    }
+
+    @Test
     public void assignRole() throws Exception {
         USER_ROLE_SERVICE.assignRoleByUserNameAndRoleTitle("moderator", "Tiger");
     }
@@ -94,6 +106,16 @@ public class MilkyWayTest {
     @Test
     public void revokeRole() throws Exception {
         USER_ROLE_SERVICE.revokeRoleByUserNameAndRoleTitle("admin", "Nika");
+    }
+
+    @Test
+    public void getAllUsersWithRoleUser() throws Exception {
+        Role role = ROLE_SERVICE.findByRoleTitle("user");
+        Set<User> users = role.getUsers();
+        for (User user : users) {
+            LOGGER.info(user);
+        }
+
     }
 
 }

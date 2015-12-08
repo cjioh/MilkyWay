@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.total.interview.server.model.Role;
 import org.total.interview.server.model.User;
 import org.total.interview.server.service.RoleService;
+import org.total.interview.server.service.UserRoleService;
 import org.total.interview.server.service.UserService;
 import org.total.interview.server.util.PasswordManager;
 import org.total.interview.server.util.PasswordManagerImpl;
@@ -14,9 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -32,7 +31,7 @@ public class RegisterServlet extends HttpServlet {
     private PasswordManager passwordManager = new PasswordManagerImpl();
 
     private static final UserService USER_SERVICE = new UserService();
-    private static final RoleService ROLE_SERVICE = new RoleService();
+    private static final UserRoleService USER_ROLE_SERVICE = new UserRoleService();
 
     public void doPost(HttpServletRequest request,
                        HttpServletResponse response)
@@ -43,7 +42,6 @@ public class RegisterServlet extends HttpServlet {
         }
 
         PrintWriter out = response.getWriter();
-
         response.setContentType("text/plain");
 
         String login = request.getParameter("login");
@@ -62,58 +60,27 @@ public class RegisterServlet extends HttpServlet {
                 LOGGER.debug("RegisterServlet.doPost(): login=" + login + " password=****\n");
             }
 
-            List<User> users = USER_SERVICE.findAll();
-
-            if (users == null || users.isEmpty()) {
-                LOGGER.error("RegisterServlet.doPost(): User collection is empty\n");
-                response.setStatus(INTERNAL_SERVER_ERROR);
-                out.println("Internal Server Error\n");
+            if (USER_SERVICE.findByName(login) != null) {
+                response.setStatus(OK);
+                out.println("User " + login + " exists already\n");
                 return;
             }
 
-            List<String> userNames = new ArrayList<String>();
+            User userToRegister = new User(login, passwordManager.encode(password));
 
-            for (User user : users) {
-                userNames.add(user.getUserName());
+            try {
+                USER_SERVICE.persist(userToRegister);
+            } catch (Exception e) {
+                LOGGER.error(e, e);
+                response.setStatus(INTERNAL_SERVER_ERROR);
+                out.println("Exception while user addition\n");
+                return;
             }
 
-            if (!userNames.contains(login)) {
-                Set<Role> roles = new HashSet<Role>();
-                Role role = ROLE_SERVICE.findByRoleTitle("user");
+            USER_ROLE_SERVICE.assignRoleByUserNameAndRoleTitle("user", login);
 
-                if (role == null) {
-                    LOGGER.error("Role in null\n");
-                    response.setStatus(INTERNAL_SERVER_ERROR);
-                    out.println("Internal Server Error\n");
-                    return;
-                }
-                roles.add(role);
-
-                if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("Assigned Role Title: " + role.getRoleTitle());
-                }
-                User user = new User(login, passwordManager.encode(password));
-
-                if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("User for addition: " + user);
-                }
-                user.setRoles(roles);
-
-                try {
-                    USER_SERVICE.persist(user);
-                } catch (Exception e) {
-                    LOGGER.error(e, e);
-                    response.setStatus(INTERNAL_SERVER_ERROR);
-                    out.println("Exception while user addition\n");
-                    return;
-                }
-
-                response.setStatus(OK);
-                out.println("User " + login + " added successfully\n");
-            } else {
-                response.setStatus(OK);
-                out.println("User " + login + " exists already\n");
-            }
+            response.setStatus(OK);
+            out.println("User " + login + " added successfully\n");
 
         } catch (Exception e) {
             LOGGER.error(e, e);

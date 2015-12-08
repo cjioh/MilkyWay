@@ -72,25 +72,4 @@ public class Role {
                 '}';
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Role role = (Role) o;
-
-        if (roleId != role.roleId) return false;
-        if (roleTitle != null ? !roleTitle.equals(role.roleTitle) : role.roleTitle != null) return false;
-        if (users != null ? !users.equals(role.users) : role.users != null) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = (int) (roleId ^ (roleId >>> 32));
-        result = 31 * result + (roleTitle != null ? roleTitle.hashCode() : 0);
-        result = 31 * result + (users != null ? users.hashCode() : 0);
-        return result;
-    }
 }
