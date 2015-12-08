@@ -36,9 +36,9 @@ public class UserService {
     }
 
     public User findByName(String name) {
-        userDAO.openCurrentSession();
+//        userDAO.openCurrentSession();
         User user = userDAO.findByName(name);
-        userDAO.closeCurrentSession();
+//        userDAO.closeCurrentSession();
         return user;
     }
 

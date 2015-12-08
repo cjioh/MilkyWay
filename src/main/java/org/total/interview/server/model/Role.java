@@ -1,6 +1,8 @@
 package org.total.interview.server.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -15,7 +17,7 @@ import java.util.Set;
                 @UniqueConstraint(columnNames = "roleTitle")
         }
 )
-public class Role {
+public class Role implements Serializable {
 
     private long roleId;
     private String roleTitle;
@@ -27,6 +29,7 @@ public class Role {
 
     public Role(String roleTitle) {
         this.roleTitle = roleTitle;
+        this.users = new HashSet<User>();
     }
 
     public Role(long roleId, String roleTitle, Set<User> users) {
@@ -55,8 +58,11 @@ public class Role {
         this.roleTitle = roleTitle;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "roles")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "roles", cascade = CascadeType.ALL)
     public Set<User> getUsers() {
+        if (this.users == null) {
+            this.users = new HashSet<User>();
+        }
         return users;
     }
 

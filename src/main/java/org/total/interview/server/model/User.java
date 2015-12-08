@@ -1,6 +1,7 @@
 package org.total.interview.server.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,7 +13,7 @@ import java.util.Set;
                 @UniqueConstraint(columnNames = "userName")
         }
 )
-public class User {
+public class User implements Serializable {
 
     private long userId;
     private String userName;
@@ -26,6 +27,7 @@ public class User {
     public User(String userName, String password) {
         this.userName = userName;
         this.password = password;
+        this.roles = new HashSet<Role>();
     }
 
     public User(long userId, String userName, String password, Set<Role> roles) {

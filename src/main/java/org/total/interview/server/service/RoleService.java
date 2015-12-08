@@ -36,9 +36,9 @@ public class RoleService {
     }
 
     public Role findByRoleTitle(String roleTitle) {
-        roleDAO.openCurrentSession();
+//        roleDAO.openCurrentSession();
         Role role = roleDAO.findByName(roleTitle);
-        roleDAO.closeCurrentSession();
+//        roleDAO.closeCurrentSession();
         return role;
     }
 

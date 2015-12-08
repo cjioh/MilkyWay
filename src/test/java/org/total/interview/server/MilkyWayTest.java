@@ -52,17 +52,6 @@ public class MilkyWayTest {
     }
 
     @Test
-    public void inserUserWithoutRole() throws Exception {
-        User user = new User();
-        user.setUserName("Tiger");
-
-        PasswordManager passwordManager = new PasswordManagerImpl();
-        user.setPassword(passwordManager.encode("tiger"));
-
-        USER_SERVICE.persist(user);
-    }
-
-    @Test
     public void findNonExistingUser() throws Exception {
         User user = USER_SERVICE.findByName("NonExisting");
         LOGGER.info(USER_SERVICE.findByName("NonExisting"));
@@ -80,6 +69,9 @@ public class MilkyWayTest {
     public void getUserByName() throws Exception {
         User user = USER_SERVICE.findByName("Total");
         LOGGER.info(user);
+        for (Role role : user.getRoles()) {
+            LOGGER.info(role.getRoleTitle());
+        }
     }
 
     @Test
@@ -94,13 +86,16 @@ public class MilkyWayTest {
 
     @Test
     public void getRoleByRoleTitle() throws Exception {
-        Role role = ROLE_SERVICE.findByRoleTitle("user");
+        Role role = ROLE_SERVICE.findByRoleTitle("guest");
         LOGGER.info(role);
+        for (User user : role.getUsers()) {
+            LOGGER.info(user.getUserName());
+        }
     }
 
     @Test
     public void assignRole() throws Exception {
-        USER_ROLE_SERVICE.assignRoleByUserNameAndRoleTitle("moderator", "Tiger");
+        USER_ROLE_SERVICE.assignRoleByUserNameAndRoleTitle("guest", "Total");
     }
 
     @Test
@@ -110,12 +105,26 @@ public class MilkyWayTest {
 
     @Test
     public void getAllUsersWithRoleUser() throws Exception {
-        Role role = ROLE_SERVICE.findByRoleTitle("user");
+        Role role = ROLE_SERVICE.findByRoleTitle("guest");
         Set<User> users = role.getUsers();
-        for (User user : users) {
-            LOGGER.info(user);
-        }
 
+    }
+
+    @Test
+    public void insertRole() throws Exception {
+        Role role = new Role("guest");
+        ROLE_SERVICE.persist(role);
+    }
+
+    @Test
+    public void inserUserWithoutRole() throws Exception {
+        User user = new User();
+        user.setUserName("Total");
+
+        PasswordManager passwordManager = new PasswordManagerImpl();
+        user.setPassword(passwordManager.encode("l777Pui1"));
+
+        USER_SERVICE.persist(user);
     }
 
 }

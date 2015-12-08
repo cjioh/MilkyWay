@@ -1,9 +1,6 @@
 package org.total.interview.server.dao;
 
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+import org.hibernate.*;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Restrictions;
@@ -86,9 +83,13 @@ public class RoleDAO implements DAOInterface<Role, Long> {
     }
 
     public Role findByName(String roleTitle) {
-        Criteria criteria = getCurrentSession().createCriteria(Role.class);
+        Session session = openCurrentSessionwithTransaction();
+        Criteria criteria = session.createCriteria(Role.class);
         criteria.add(Restrictions.like("roleTitle", roleTitle));
-        return (Role) criteria.uniqueResult();
+        Role role = (Role) criteria.uniqueResult();
+//        Hibernate.initialize(role.getUsers());
+        closeCurrentSessionwithTransaction();
+        return role;
     }
 
     public void delete(Role entity) {

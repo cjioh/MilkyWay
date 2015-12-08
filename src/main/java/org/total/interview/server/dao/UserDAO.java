@@ -1,9 +1,6 @@
 package org.total.interview.server.dao;
 
-import org.hibernate.Criteria;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+import org.hibernate.*;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Restrictions;
@@ -82,9 +79,13 @@ public class UserDAO implements DAOInterface<User, Long> {
     }
 
     public User findByName(String name) {
-        Criteria criteria = getCurrentSession().createCriteria(User.class);
+        Session session = openCurrentSessionwithTransaction();
+        Criteria criteria = session.createCriteria(User.class);
         criteria.add(Restrictions.like("userName", name));
-        return (User) criteria.uniqueResult();
+        User user = (User) criteria.uniqueResult();
+        Hibernate.initialize(user.getRoles());
+        closeCurrentSessionwithTransaction();
+        return user;
     }
 
     public void delete(User entity) {

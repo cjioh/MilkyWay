@@ -54,40 +54,40 @@ public class RegisterServlet extends HttpServlet {
             return;
         }
 
-        try {
-
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("RegisterServlet.doPost(): login=" + login + " password=****\n");
-            }
-
-            if (USER_SERVICE.findByName(login) != null) {
-                response.setStatus(OK);
-                out.println("User " + login + " exists already\n");
-                return;
-            }
-
-            User userToRegister = new User(login, passwordManager.encode(password));
-
-            try {
-                USER_SERVICE.persist(userToRegister);
-            } catch (Exception e) {
-                LOGGER.error(e, e);
-                response.setStatus(INTERNAL_SERVER_ERROR);
-                out.println("Exception while user addition\n");
-                return;
-            }
-
-            USER_ROLE_SERVICE.assignRoleByUserNameAndRoleTitle("user", login);
-
-            response.setStatus(OK);
-            out.println("User " + login + " added successfully\n");
-
-        } catch (Exception e) {
-            LOGGER.error(e, e);
-        } finally {
-            out.flush();
-            out.close();
-        }
+//        try {
+//
+//            if (LOGGER.isDebugEnabled()) {
+//                LOGGER.debug("RegisterServlet.doPost(): login=" + login + " password=****\n");
+//            }
+//
+//            if (USER_SERVICE.findByName(login) != null) {
+//                response.setStatus(OK);
+//                out.println("User " + login + " exists already\n");
+//                return;
+//            }
+//
+//            User userToRegister = new User(login, passwordManager.encode(password));
+//
+//            try {
+//                USER_SERVICE.persist(userToRegister);
+//            } catch (Exception e) {
+//                LOGGER.error(e, e);
+//                response.setStatus(INTERNAL_SERVER_ERROR);
+//                out.println("Exception while user addition\n");
+//                return;
+//            }
+//
+//            USER_ROLE_SERVICE.assignRoleByUserNameAndRoleTitle("user", login);
+//
+//            response.setStatus(OK);
+//            out.println("User " + login + " added successfully\n");
+//
+//        } catch (Exception e) {
+//            LOGGER.error(e, e);
+//        } finally {
+//            out.flush();
+//            out.close();
+//        }
     }
 
 }

@@ -51,47 +51,47 @@ public class AuthServlet extends HttpServlet {
             return;
         }
 
-        try {
-
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("AuthServlet.doPost(): login=" + login + " password=****\n");
-            }
-
-            List<User> users = USER_SERVICE.findAll();
-
-            if (users == null || users.isEmpty()) {
-                LOGGER.error("AuthServlet.doPost(): User collection is empty\n");
-                response.setStatus(INTERNAL_SERVER_ERROR);
-                out.println("Internal Server Error\n");
-                return;
-            }
-
-            List<String> userNames = new ArrayList<String>();
-
-            for (User user : users) {
-                userNames.add(user.getUserName());
-            }
-
-            if (!userNames.contains(login)) {
-                response.setStatus(UNAUTHORIZED);
-                out.println("Invalid credentials\n");
-                return;
-            } else {
-                if (passwordManager.encode(password).equals(USER_SERVICE.findByName(login).getPassword())) {
-                    response.setStatus(OK);
-                    out.println("Hello " + login + "!\n");
-                } else {
-                    response.setStatus(UNAUTHORIZED);
-                    out.println("Invalid credentials\n");
-                    return;
-                }
-            }
-
-        } catch (Exception e) {
-            LOGGER.error(e, e);
-        } finally {
-            out.flush();
-            out.close();
-        }
+//        try {
+//
+//            if (LOGGER.isDebugEnabled()) {
+//                LOGGER.debug("AuthServlet.doPost(): login=" + login + " password=****\n");
+//            }
+//
+//            List<User> users = USER_SERVICE.findAll();
+//
+//            if (users == null || users.isEmpty()) {
+//                LOGGER.error("AuthServlet.doPost(): User collection is empty\n");
+//                response.setStatus(INTERNAL_SERVER_ERROR);
+//                out.println("Internal Server Error\n");
+//                return;
+//            }
+//
+//            List<String> userNames = new ArrayList<String>();
+//
+//            for (User user : users) {
+//                userNames.add(user.getUserName());
+//            }
+//
+//            if (!userNames.contains(login)) {
+//                response.setStatus(UNAUTHORIZED);
+//                out.println("Invalid credentials\n");
+//                return;
+//            } else {
+//                if (passwordManager.encode(password).equals(USER_SERVICE.findByName(login).getPassword())) {
+//                    response.setStatus(OK);
+//                    out.println("Hello " + login + "!\n");
+//                } else {
+//                    response.setStatus(UNAUTHORIZED);
+//                    out.println("Invalid credentials\n");
+//                    return;
+//                }
+//            }
+//
+//        } catch (Exception e) {
+//            LOGGER.error(e, e);
+//        } finally {
+//            out.flush();
+//            out.close();
+//        }
     }
 }
