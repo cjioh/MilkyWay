@@ -33,98 +33,30 @@ public class MilkyWayTest {
     }
 
     @Test
-    public void insertUserWithRole() throws Exception {
+    public void test() throws Exception {
+//        PasswordManager passwordManager = new PasswordManagerImpl();
+//        USER_SERVICE.persist(new User("Vova", passwordManager.encode("vova")));
 
-        PasswordManager passwordManager = new PasswordManagerImpl();
+//        ROLE_SERVICE.persist(new Role("moderator"));
 
-        User user = new User();
-        user.setUserName("Qwerty");
-        user.setPassword(passwordManager.encode("qwerty"));
+//            for (User user : USER_SERVICE.findAll()) {
+//                LOGGER.error(user);
+//            }
+//        User user = USER_SERVICE.findByName("Vova");
+//        for (Role role : user.getRoles()) {
+//            LOGGER.error("***************" + role.getRoleTitle());
+//        }
 
-        USER_SERVICE.persist(user);
+//            LOGGER.info(user);
+//        Role role = ROLE_SERVICE.findById(1L);
+//        LOGGER.info(role);
 
-        USER_ROLE_SERVICE.assignRoleByUserNameAndRoleTitle("user", "Qwerty");
-    }
-
-    @Test
-    public void getAllUsers() throws Exception {
-
-    }
-
-    @Test
-    public void findNonExistingUser() throws Exception {
-        User user = USER_SERVICE.findByName("NonExisting");
-        LOGGER.info(USER_SERVICE.findByName("NonExisting"));
-        Assert.assertNull(user);
-        user.getUserId();
-    }
-
-    @Test
-    public void getUserById() throws Exception {
-        User user = USER_SERVICE.findById(1L);
-        LOGGER.info(user);
-    }
-
-    @Test
-    public void getUserByName() throws Exception {
-        User user = USER_SERVICE.findByName("Total");
-        LOGGER.info(user);
-        for (Role role : user.getRoles()) {
-            LOGGER.info(role.getRoleTitle());
-        }
-    }
-
-    @Test
-    public void updateUser() throws Exception {
-
-    }
-
-    @Test
-    public void deleteUser() throws Exception {
-
-    }
-
-    @Test
-    public void getRoleByRoleTitle() throws Exception {
-        Role role = ROLE_SERVICE.findByRoleTitle("guest");
-        LOGGER.info(role);
-        for (User user : role.getUsers()) {
-            LOGGER.info(user.getUserName());
-        }
-    }
-
-    @Test
-    public void assignRole() throws Exception {
-        USER_ROLE_SERVICE.assignRoleByUserNameAndRoleTitle("guest", "Total");
-    }
-
-    @Test
-    public void revokeRole() throws Exception {
-        USER_ROLE_SERVICE.revokeRoleByUserNameAndRoleTitle("admin", "Nika");
-    }
-
-    @Test
-    public void getAllUsersWithRoleUser() throws Exception {
-        Role role = ROLE_SERVICE.findByRoleTitle("guest");
-        Set<User> users = role.getUsers();
-
-    }
-
-    @Test
-    public void insertRole() throws Exception {
-        Role role = new Role("guest");
-        ROLE_SERVICE.persist(role);
-    }
-
-    @Test
-    public void inserUserWithoutRole() throws Exception {
-        User user = new User();
-        user.setUserName("Total");
-
-        PasswordManager passwordManager = new PasswordManagerImpl();
-        user.setPassword(passwordManager.encode("l777Pui1"));
-
-        USER_SERVICE.persist(user);
+//        for (Role role : ROLE_SERVICE.findAll()) {
+//            LOGGER.info(role);
+//        }
+//        USER_ROLE_SERVICE.assignRoleByUserNameAndRoleTitle("Vova", "guest");
+        User user = USER_SERVICE.findByName("NON");
+        user.getPassword();
     }
 
 }

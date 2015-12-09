@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
     <head>
-        <title>Interview</title>
+        <title>Start page</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <script type="text/javascript" src="js/jquery.js"></script>

@@ -15,7 +15,7 @@ public class UserRoleService {
     private static final SessionFactory SESSION_FACTORY = HibernateUtil.getSessionFactory();
     private static final Logger LOGGER = Logger.getLogger(UserRoleService.class);
 
-    public boolean assignRoleByUserNameAndRoleTitle(String roleTitle, String userName) {
+    public boolean assignRoleByUserNameAndRoleTitle(String userName, String roleTitle) {
         Session session = SESSION_FACTORY.openSession();
         if (session == null) {
             LOGGER.error("Session creation failed.\n");
@@ -83,7 +83,7 @@ public class UserRoleService {
         return false;
     }
 
-    public boolean revokeRoleByUserNameAndRoleTitle(String roleTitle, String userName) {
+    public boolean revokeRoleByUserNameAndRoleTitle(String userName, String roleTitle) {
         Session session = SESSION_FACTORY.openSession();
         if (session == null) {
             LOGGER.error("Session creation failed.\n");

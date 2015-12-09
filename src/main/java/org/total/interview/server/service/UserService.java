@@ -29,9 +29,9 @@ public class UserService {
     }
 
     public User findById(Long id) {
-        userDAO.openCurrentSession();
+//        userDAO.openCurrentSession();
         User user = userDAO.findById(id);
-        userDAO.closeCurrentSession();
+//        userDAO.closeCurrentSession();
         return user;
     }
 

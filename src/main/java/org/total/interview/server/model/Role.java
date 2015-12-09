@@ -5,10 +5,6 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Created by pavlo.fandych on 12/3/2015.
- */
-
 @Entity
 @Table(
         name = "Role",

@@ -73,7 +73,10 @@ public class UserDAO implements DAOInterface<User, Long> {
     }
 
     public User findById(Long id) {
+        Session session = openCurrentSessionwithTransaction();
         User user = (User) getCurrentSession().get(User.class, id);
+        Hibernate.initialize(user.getRoles());
+        closeCurrentSessionwithTransaction();
         return user;
 
     }
@@ -83,7 +86,9 @@ public class UserDAO implements DAOInterface<User, Long> {
         Criteria criteria = session.createCriteria(User.class);
         criteria.add(Restrictions.like("userName", name));
         User user = (User) criteria.uniqueResult();
-        Hibernate.initialize(user.getRoles());
+        if (user != null) {
+            Hibernate.initialize(user.getRoles());
+        }
         closeCurrentSessionwithTransaction();
         return user;
     }

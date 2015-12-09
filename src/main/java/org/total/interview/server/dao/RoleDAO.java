@@ -1,17 +1,16 @@
 package org.total.interview.server.dao;
 
-import org.hibernate.*;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Restrictions;
 import org.total.interview.server.model.Role;
-import org.total.interview.server.model.User;
 
 import java.util.List;
 
-/**
- * Created by total on 12/5/15.
- */
 public class RoleDAO implements DAOInterface<Role, Long> {
 
     private Session currentSession;
@@ -87,7 +86,6 @@ public class RoleDAO implements DAOInterface<Role, Long> {
         Criteria criteria = session.createCriteria(Role.class);
         criteria.add(Restrictions.like("roleTitle", roleTitle));
         Role role = (Role) criteria.uniqueResult();
-//        Hibernate.initialize(role.getUsers());
         closeCurrentSessionwithTransaction();
         return role;
     }
