@@ -4,5 +4,7 @@ function check(input) {
 };
 
 $(document).ready(function(){
+
 	$("div.container").css("background-color", "#FFDEAD");
+
 });

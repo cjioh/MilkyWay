@@ -35,7 +35,7 @@ public class MilkyWayTest {
     @Test
     public void test() throws Exception {
 //        PasswordManager passwordManager = new PasswordManagerImpl();
-//        USER_SERVICE.persist(new User("Vova", passwordManager.encode("vova")));
+//        USER_SERVICE.persist(new User("Nika", passwordManager.encode("nika")));
 
 //        ROLE_SERVICE.persist(new Role("moderator"));
 
@@ -54,9 +54,14 @@ public class MilkyWayTest {
 //        for (Role role : ROLE_SERVICE.findAll()) {
 //            LOGGER.info(role);
 //        }
-//        USER_ROLE_SERVICE.assignRoleByUserNameAndRoleTitle("Vova", "guest");
-        User user = USER_SERVICE.findByName("NON");
-        user.getPassword();
+        USER_ROLE_SERVICE.assignRoleByUserNameAndRoleTitle("Nika", "moderator");
+//        User user = USER_SERVICE.findByName("NON");
+//        user.getPassword();
+
+//        for (int index = 0; index < 100; index++) {
+//            USER_ROLE_SERVICE.assignRoleByUserNameAndRoleTitle("Anton", "user");
+//            USER_ROLE_SERVICE.revokeRoleByUserNameAndRoleTitle("Anton", "user");
+//        }
     }
 
 }

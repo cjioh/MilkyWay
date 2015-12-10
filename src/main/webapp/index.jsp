@@ -10,13 +10,25 @@
     </head>
     <body>
         <div class="container">
-            <div align="right">
-                <form action="/org.total.hibernate/authorization" method="POST" class="form-inline">
-                    Login: <input type="text" class="input-large" name="login"><br/>
-                    Password: <input type="password" class="input-large" name="password"/><br/>
-                    <input type="submit" value="Submit"/>
+            <div align="center">
+                <h1>Title</h1>
+            </div>
+            <div id="formdiv" align="right">
+                <form action="/org.total.hibernate/authorization" id="myForm" method="POST" class="form-inline">
+                    <label class="title">Login:</label><input type="text" class="input-large" name="login"><br/>
+                    <label class="title">Password:</label><input type="password" class="input-large" name="password"/><br/>
+                    <input type="submit" id="submitButton" value="Submit"/>
                 </form>
                 <a href="register.jsp">Registration</a>
+            </div>
+            <div align="center">
+                <br>
+                <br>
+                <br>
+                <h1>Some content</h1>
+                <br>
+                <br>
+                <br>
             </div>
         </div>
     </body>
