@@ -11,7 +11,7 @@
     <body>
         <div class="container">
             <div align="right">
-                <form action="/org.total.hibernate/registration" method="POST" class="form-inline">
+                <form action="/registration" method="POST" class="form-inline">
                     Login: <input type="text" class="input-large" name="login"><br/>
                     Password: <input type="password" class="input-large" name="password"/><br/>
                     <input type="submit" value="Submit"/>

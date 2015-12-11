@@ -14,6 +14,7 @@ import org.total.interview.server.util.PasswordManager;
 import org.total.interview.server.util.PasswordManagerImpl;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class MilkyWayTest {
@@ -35,16 +36,16 @@ public class MilkyWayTest {
     @Test
     public void test() throws Exception {
 //        PasswordManager passwordManager = new PasswordManagerImpl();
-//        USER_SERVICE.persist(new User("Nika", passwordManager.encode("nika")));
+//        USER_SERVICE.persist(new User("Tiger", passwordManager.encode("tiger")));
 
-//        ROLE_SERVICE.persist(new Role("moderator"));
+//        ROLE_SERVICE.persist(new Role("admin"));
 
 //            for (User user : USER_SERVICE.findAll()) {
 //                LOGGER.error(user);
 //            }
-//        User user = USER_SERVICE.findByName("Vova");
-//        for (Role role : user.getRoles()) {
-//            LOGGER.error("***************" + role.getRoleTitle());
+//        User user = USER_SERVICE.findByName("Tiger");
+//        if (user.getRoles().contains(ROLE_SERVICE.findByRoleTitle("admin"))) {
+//            LOGGER.info("Ok");
 //        }
 
 //            LOGGER.info(user);
@@ -54,7 +55,8 @@ public class MilkyWayTest {
 //        for (Role role : ROLE_SERVICE.findAll()) {
 //            LOGGER.info(role);
 //        }
-        USER_ROLE_SERVICE.assignRoleByUserNameAndRoleTitle("Nika", "moderator");
+//        List<User> users = USER_SERVICE.findAll();
+//        USER_ROLE_SERVICE.assignRoleByUserNameAndRoleTitle("Tiger", "user");
 //        User user = USER_SERVICE.findByName("NON");
 //        user.getPassword();
 

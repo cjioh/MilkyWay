@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app>
-
     <servlet>
         <servlet-name>registerServlet</servlet-name>
         <servlet-class>org.total.interview.server.servlet.RegisterServlet</servlet-class>

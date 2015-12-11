@@ -1,6 +1,8 @@
 package org.total.interview.server.servlet;
 
 import org.apache.log4j.Logger;
+import org.total.interview.server.model.User;
+import org.total.interview.server.service.RoleService;
 import org.total.interview.server.service.UserService;
 import org.total.interview.server.util.PasswordManager;
 import org.total.interview.server.util.PasswordManagerImpl;
@@ -14,7 +16,7 @@ import java.io.PrintWriter;
 
 public class AuthServlet extends HttpServlet {
 
-    private static final Logger LOGGER = Logger.getLogger(RegisterServlet.class);
+    private static final Logger LOGGER = Logger.getLogger(AuthServlet.class);
 
     private static final int INTERNAL_SERVER_ERROR = 500;
     private static final int UNAUTHORIZED = 401;
@@ -23,6 +25,7 @@ public class AuthServlet extends HttpServlet {
     private PasswordManager passwordManager = new PasswordManagerImpl();
 
     private static final UserService USER_SERVICE = new UserService();
+    private static final RoleService ROLE_SERVICE = new RoleService();
 
     public void doPost(HttpServletRequest request,
                        HttpServletResponse response)
@@ -52,12 +55,19 @@ public class AuthServlet extends HttpServlet {
                 LOGGER.debug("Status: REQ_SUCCESS, login=" + login + " password=****\n");
             }
 
-            if (USER_SERVICE.findByName(login) != null) {
+            User user = USER_SERVICE.findByName(login);
+            if (user != null) {
 
-                if (passwordManager.encode(password).equals(USER_SERVICE.findByName(login).getPassword())) {
+                if (passwordManager.encode(password).equals(user.getPassword())) {
                     LOGGER.debug("Status: REQ_SUCCESS, auth successful\n");
                     response.setStatus(OK);
-                    out.println("Hello " + login + "!\n");
+
+                    if (user.getRoles().contains(ROLE_SERVICE.findByRoleTitle("admin"))) {
+                        response.sendRedirect("userManagement.jsp");
+                    } else {
+                        out.println("Hello " + login + "!\n");
+                    }
+
                 } else {
                     LOGGER.debug("Status: REQ_FAIL, invalid credentials, wrong password submited.\n");
                     response.setStatus(UNAUTHORIZED);
