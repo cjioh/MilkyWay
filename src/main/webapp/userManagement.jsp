@@ -19,13 +19,9 @@
             List<User> users = service.findAll();
             pageContext.setAttribute("users", users);
         %>
-        size is <%= users.size() %><br>
-
-            <c:forEach items="${users}" var="user">
-
-                    <c:out value="${user.getUserName()}" />
-
-            </c:forEach>
-
+        <label>Size is <%= users.size() %></label><br>
+        <c:forEach items="${users}" var="user">
+            <c:out value="${user.getUserName()}" /><br>
+        </c:forEach>
     </body>
 </html>
