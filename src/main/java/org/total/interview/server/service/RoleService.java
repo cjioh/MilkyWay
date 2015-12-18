@@ -2,6 +2,7 @@ package org.total.interview.server.service;
 
 import org.total.interview.server.dao.RoleDAO;
 import org.total.interview.server.model.Role;
+import org.total.interview.server.model.RoleType;
 
 import java.util.List;
 
@@ -10,59 +11,39 @@ import java.util.List;
  */
 public class RoleService {
 
-    private static RoleDAO roleDAO;
+    private RoleDAO roleDAO;
 
     public RoleService() {
         roleDAO = new RoleDAO();
     }
 
-    public void persist(Role entity) {
-        roleDAO.openCurrentSessionwithTransaction();
-        roleDAO.persist(entity);
-        roleDAO.closeCurrentSessionwithTransaction();
-    }
-
-    public void update(Role entity) {
-        roleDAO.openCurrentSessionwithTransaction();
-        roleDAO.update(entity);
-        roleDAO.closeCurrentSessionwithTransaction();
-    }
-
     public Role findById(Long id) {
-        roleDAO.openCurrentSession();
-        Role role = roleDAO.findById(id);
-        roleDAO.closeCurrentSession();
-        return role;
+        return roleDAO.findById(id);
     }
 
-    public Role findByRoleTitle(String roleTitle) {
-//        roleDAO.openCurrentSession();
-        Role role = roleDAO.findByName(roleTitle);
-//        roleDAO.closeCurrentSession();
-        return role;
-    }
-
-    public void delete(Long id) {
-        roleDAO.openCurrentSessionwithTransaction();
-        Role role = roleDAO.findById(id);
-        roleDAO.delete(role);
-        roleDAO.closeCurrentSessionwithTransaction();
+    public Role findByRoleType(RoleType roleType) {
+        return roleDAO.findByRoleType(roleType);
     }
 
     public List<Role> findAll() {
-        roleDAO.openCurrentSession();
-        List<Role> roles = roleDAO.findAll();
-        roleDAO.closeCurrentSession();
-        return roles;
+        return roleDAO.findAll();
+    }
+
+    public void persist(Role entity) {
+        roleDAO.persist(entity);
+    }
+
+    public void update(Role entity) {
+        roleDAO.update(entity);
+    }
+
+    public void delete(Long id) {
+        Role role = roleDAO.findById(id);
+        roleDAO.delete(role);
     }
 
     public void deleteAll() {
-        roleDAO.openCurrentSessionwithTransaction();
         roleDAO.deleteAll();
-        roleDAO.closeCurrentSessionwithTransaction();
     }
 
-    public RoleDAO roleDAO() {
-        return roleDAO;
-    }
 }

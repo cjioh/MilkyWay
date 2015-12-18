@@ -20,9 +20,7 @@ public class User implements Serializable {
     private String password;
     private Set<Role> roles;
 
-    public User() {
-
-    }
+    public User() {}
 
     public User(String userName, String password) {
         this.userName = userName;

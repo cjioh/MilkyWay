@@ -10,27 +10,25 @@ import java.util.Set;
         name = "Role",
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = "roleId"),
-                @UniqueConstraint(columnNames = "roleTitle")
+                @UniqueConstraint(columnNames = "roleType")
         }
 )
 public class Role implements Serializable {
 
     private long roleId;
-    private String roleTitle;
+    private RoleType roleType;
     private Set<User> users;
 
-    public Role() {
+    public Role() {}
 
-    }
-
-    public Role(String roleTitle) {
-        this.roleTitle = roleTitle;
+    public Role(RoleType roleType) {
+        this.roleType = roleType;
         this.users = new HashSet<User>();
     }
 
-    public Role(long roleId, String roleTitle, Set<User> users) {
+    public Role(long roleId, RoleType roleType, Set<User> users) {
         this.roleId = roleId;
-        this.roleTitle = roleTitle;
+        this.roleType = roleType;
         this.users = users;
     }
 
@@ -45,13 +43,14 @@ public class Role implements Serializable {
         this.roleId = roleId;
     }
 
-    @Column(name = "roleTitle", unique = true, nullable = false)
-    public String getRoleTitle() {
-        return roleTitle;
+    @Column(name = "roleType", unique = true, nullable = false)
+    @Enumerated(EnumType.STRING)
+    public RoleType getRoleType() {
+        return roleType;
     }
 
-    public void setRoleTitle(String roleTitle) {
-        this.roleTitle = roleTitle;
+    public void setRoleType(RoleType roleType) {
+        this.roleType = roleType;
     }
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "roles", cascade = CascadeType.ALL)
@@ -70,7 +69,7 @@ public class Role implements Serializable {
     public String toString() {
         return "Role{" +
                 "roleId=" + roleId +
-                ", roleTitle='" + roleTitle + '\'' +
+                ", roleType='" + roleType + '\'' +
                 '}';
     }
 
@@ -82,7 +81,7 @@ public class Role implements Serializable {
         Role role = (Role) o;
 
         if (roleId != role.roleId) return false;
-        if (roleTitle != null ? !roleTitle.equals(role.roleTitle) : role.roleTitle != null) return false;
+        if (roleType != null ? !roleType.equals(role.roleType) : role.roleType != null) return false;
 
         return true;
     }
@@ -90,7 +89,7 @@ public class Role implements Serializable {
     @Override
     public int hashCode() {
         int result = (int) (roleId ^ (roleId >>> 32));
-        result = 31 * result + (roleTitle != null ? roleTitle.hashCode() : 0);
+        result = 31 * result + (roleType != null ? roleType.hashCode() : 0);
         return result;
     }
 }

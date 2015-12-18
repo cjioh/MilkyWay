@@ -10,60 +10,43 @@ import java.util.List;
  */
 public class UserService {
 
-    private static UserDAO userDAO;
+    private UserDAO userDAO;
 
     public UserService() {
         userDAO = new UserDAO();
     }
 
-    public void persist(User entity) {
-        userDAO.openCurrentSessionwithTransaction();
-        userDAO.persist(entity);
-        userDAO.closeCurrentSessionwithTransaction();
-    }
-
-    public void update(User entity) {
-        userDAO.openCurrentSessionwithTransaction();
-        userDAO.update(entity);
-        userDAO.closeCurrentSessionwithTransaction();
-    }
-
     public User findById(Long id) {
-//        userDAO.openCurrentSession();
-        User user = userDAO.findById(id);
-//        userDAO.closeCurrentSession();
-        return user;
+        return userDAO.findById(id);
     }
 
     public User findByName(String name) {
-//        userDAO.openCurrentSession();
-        User user = userDAO.findByName(name);
-//        userDAO.closeCurrentSession();
-        return user;
+        return userDAO.findByName(name);
     }
 
-    public void delete(Long id) {
-        userDAO.openCurrentSessionwithTransaction();
-        User user = userDAO.findById(id);
-        userDAO.delete(user);
-        userDAO.closeCurrentSessionwithTransaction();
+    public List<User> findByUserNameAndPassword(String userName, String password) {
+        return userDAO.findByUserNameAndPassword(userName, password);
     }
 
     public List<User> findAll() {
-        userDAO.openCurrentSession();
-        List<User> users = userDAO.findAll();
-        userDAO.closeCurrentSession();
-        return users;
+        return userDAO.findAll();
+    }
+
+    public void persist(User entity) {
+        userDAO.persist(entity);
+    }
+
+    public void update(User entity) {
+        userDAO.update(entity);
+    }
+
+    public void deleteById(Long id) {
+        User user = userDAO.findById(id);
+        userDAO.delete(user);
     }
 
     public void deleteAll() {
-        userDAO.openCurrentSessionwithTransaction();
         userDAO.deleteAll();
-        userDAO.closeCurrentSessionwithTransaction();
-    }
-
-    public UserDAO userDAO() {
-        return userDAO;
     }
 
 }

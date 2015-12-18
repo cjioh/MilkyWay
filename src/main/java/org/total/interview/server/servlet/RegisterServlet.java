@@ -1,6 +1,7 @@
 package org.total.interview.server.servlet;
 
 import org.apache.log4j.Logger;
+import org.total.interview.server.model.RoleType;
 import org.total.interview.server.model.User;
 import org.total.interview.server.service.UserRoleService;
 import org.total.interview.server.service.UserService;
@@ -31,9 +32,7 @@ public class RegisterServlet extends HttpServlet {
                        HttpServletResponse response)
             throws ServletException, IOException {
 
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Status: REQ_ENTRY, register begin.\n");
-        }
+        LOGGER.debug("Status: REQ_ENTRY, register begin.\n");
 
         PrintWriter out = response.getWriter();
 
@@ -50,10 +49,7 @@ public class RegisterServlet extends HttpServlet {
         }
 
         try {
-
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("Status: REQ_SUCCESS, login=" + login + " password=****\n");
-            }
+            LOGGER.debug("Status: REQ_SUCCESS, login=" + login + "\n");
 
             if (USER_SERVICE.findByName(login) != null) {
                 LOGGER.debug("Status: REQ_FAIL, user " + login + " already exists.\n");
@@ -80,9 +76,9 @@ public class RegisterServlet extends HttpServlet {
             }
 
             try {
-                USER_ROLE_SERVICE.assignRoleByUserNameAndRoleTitle(login, "guest");
-                LOGGER.debug("Status: REQ_SUCCESS, role \"user\" to user " + login + " assigned successful.\n");
-                response.setStatus(OK);
+                USER_ROLE_SERVICE.assignRoleByUserNameAndRoleType(login, RoleType.GUEST);
+                LOGGER.debug("Status: REQ_SUCCESS, role \"" + RoleType.GUEST + "\" to user " + login + " assigned successful.\n");
+                        response.setStatus(OK);
                 out.println("User " + login + " added successfully\n");
             } catch (Exception e) {
                 LOGGER.error("Status: REQ_FAIL, Error while performing register ", e);

@@ -1,6 +1,7 @@
 package org.total.interview.server.servlet;
 
 import org.apache.log4j.Logger;
+import org.total.interview.server.model.RoleType;
 import org.total.interview.server.model.User;
 import org.total.interview.server.service.RoleService;
 import org.total.interview.server.service.UserService;
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 public class AuthServlet extends HttpServlet {
 
@@ -31,9 +33,7 @@ public class AuthServlet extends HttpServlet {
                        HttpServletResponse response)
             throws ServletException, IOException {
 
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Status: REQ_ENTRY, auth begin\n");
-        }
+        LOGGER.debug("Status: REQ_ENTRY, auth begin\n");
 
         PrintWriter out = response.getWriter();
 
@@ -50,38 +50,25 @@ public class AuthServlet extends HttpServlet {
         }
 
         try {
+            LOGGER.debug("Status: REQ_SUCCESS, login=" + login + "\n");
 
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("Status: REQ_SUCCESS, login=" + login + " password=****\n");
-            }
+            List<User> users = USER_SERVICE.findByUserNameAndPassword(login, passwordManager.encode(password));
 
-            User user = USER_SERVICE.findByName(login);
-            if (user != null) {
+            if (users.contains(USER_SERVICE.findByName(login))) {
+                LOGGER.debug("Status: REQ_SUCCESS, auth successful\n");
+                response.setStatus(OK);
 
-                if (passwordManager.encode(password).equals(user.getPassword())) {
-                    LOGGER.debug("Status: REQ_SUCCESS, auth successful\n");
-                    response.setStatus(OK);
-
-                    if (user.getRoles().contains(ROLE_SERVICE.findByRoleTitle("admin"))) {
-                        response.sendRedirect("userManagement.jsp");
-                    } else {
-                        out.println("Hello " + login + "!\n");
-                    }
-
+                if (users.get(0).getRoles().contains(ROLE_SERVICE.findByRoleType(RoleType.ADMIN))) {
+                    response.sendRedirect("userManagement.jsp");
                 } else {
-                    LOGGER.debug("Status: REQ_FAIL, invalid credentials, wrong password submited.\n");
-                    response.setStatus(UNAUTHORIZED);
-                    out.println("Invalid credentials, wrong password submited.\n");
-                    return;
+                    out.println("Hello " + login + "!\n");
                 }
-
             } else {
-                LOGGER.warn("Status: REQ_FAIL, Invalid credentials, user " + login + " does not exist.\n");
+                LOGGER.warn("Status: REQ_FAIL, invalid credentials.\n");
                 response.setStatus(UNAUTHORIZED);
-                out.println("Invalid credentials, user " + login + " does not exist.\n");
+                out.println("Invalid credentials.\n");
                 return;
             }
-
         } catch (Exception e) {
             LOGGER.error("Status: REQ_FAIL, Error while performing auth ", e);
             response.setStatus(INTERNAL_SERVER_ERROR);

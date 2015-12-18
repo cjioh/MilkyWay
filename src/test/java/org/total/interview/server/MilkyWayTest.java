@@ -5,6 +5,7 @@ import org.hibernate.SessionFactory;
 import org.junit.Assert;
 import org.junit.Test;
 import org.total.interview.server.model.Role;
+import org.total.interview.server.model.RoleType;
 import org.total.interview.server.model.User;
 import org.total.interview.server.service.RoleService;
 import org.total.interview.server.service.UserRoleService;
@@ -12,10 +13,6 @@ import org.total.interview.server.service.UserService;
 import org.total.interview.server.util.HibernateUtil;
 import org.total.interview.server.util.PasswordManager;
 import org.total.interview.server.util.PasswordManagerImpl;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 public class MilkyWayTest {
 
@@ -36,33 +33,46 @@ public class MilkyWayTest {
     @Test
     public void test() throws Exception {
 //        PasswordManager passwordManager = new PasswordManagerImpl();
-//        USER_SERVICE.persist(new User("Gaga", passwordManager.encode("gaga")));
-
-//        ROLE_SERVICE.persist(new Role("guest"));
-
+//        USER_SERVICE.persist(new User("AAA", passwordManager.encode("aaa")));
+//        ROLE_SERVICE.persist(new Role(RoleType.GUEST));
 //            for (User user : USER_SERVICE.findAll()) {
 //                LOGGER.error(user);
 //            }
-//        User user = USER_SERVICE.findByName("Tiger");
+//        List<User> users = USER_SERVICE.findByUserNameAndPassword("Lama", passwordManager.encode("lama"));
+//        LOGGER.info(users);
+//        User user = users.get(0);
+//        user.setUserName("Lana");
+//        USER_SERVICE.update(user);
+//        User user = USER_SERVICE.findByRoleType("Tiger");
+//        LOGGER.info(user);
 //        if (user.getRoles().contains(ROLE_SERVICE.findByRoleTitle("admin"))) {
 //            LOGGER.info("Ok");
 //        }
-
+//        List<User> users = USER_SERVICE.findByUserNameAndPassword("Anton", passwordManager.encode("anton"));
+//        for (User elem : users) {
+//            LOGGER.info("*****************" + users.contains(USER_SERVICE.findByRoleType("Anton")));
+//        }
+//            List<Role> roles = ROLE_SERVICE.findAll();
+//        for (Role elem : roles) {
+//            LOGGER.info(elem);
+//        }
 //            LOGGER.info(user);
-//        Role role = ROLE_SERVICE.findById(1L);
+//        Role role = ROLE_SERVICE.findByRoleType(RoleType.MODERATOR);
 //        LOGGER.info(role);
-
 //        for (Role role : ROLE_SERVICE.findAll()) {
 //            LOGGER.info(role);
 //        }
+//        USER_SERVICE.deleteById(9L);
 //        List<User> users = USER_SERVICE.findAll();
-//        USER_ROLE_SERVICE.assignRoleByUserNameAndRoleTitle("Gaga", "guest");
-//        User user = USER_SERVICE.findByName("NON");
+//        for (User elem : users) {
+//            LOGGER.info(elem);
+//        }
+//        Assert.assertTrue(USER_ROLE_SERVICE.assignRoleByUserNameAndRoleType("Vova", RoleType.GUEST));
+//        User user = USER_SERVICE.findByRoleType("NON");
 //        user.getPassword();
-
 //        for (int index = 0; index < 100; index++) {
-//            USER_ROLE_SERVICE.assignRoleByUserNameAndRoleTitle("Anton", "user");
-//            USER_ROLE_SERVICE.revokeRoleByUserNameAndRoleTitle("Anton", "user");
+//            USER_ROLE_SERVICE.assignRoleByUserNameAndRoleType("Anton", "user");
+//            USER_ROLE_SERVICE.revokeRoleByUserNameAndRoleType("Anton", "user");
 //        }
     }
 
