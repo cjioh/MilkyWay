@@ -3,17 +3,17 @@ package org.total.interview.server.service;
 import org.apache.log4j.Logger;
 import org.hibernate.*;
 import org.hibernate.criterion.Restrictions;
+import org.total.interview.server.dao.GenericDAO;
 import org.total.interview.server.model.Role;
 import org.total.interview.server.model.RoleType;
 import org.total.interview.server.model.User;
-import org.total.interview.server.util.HibernateUtil;
 
 /**
  * Created by pavlo.fandych on 12/7/2015.
  */
 public class UserRoleService {
 
-    private static final SessionFactory SESSION_FACTORY = HibernateUtil.getSessionFactory();
+    private static final SessionFactory SESSION_FACTORY = GenericDAO.getSessionFactory();
     private static final Logger LOGGER = Logger.getLogger(UserRoleService.class);
 
     public boolean assignRoleByUserNameAndRoleType(String userName, RoleType roleType) {

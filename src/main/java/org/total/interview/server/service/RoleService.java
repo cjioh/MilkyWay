@@ -33,11 +33,7 @@ public class RoleService {
         roleDAO.persist(entity);
     }
 
-    public void update(Role entity) {
-        roleDAO.update(entity);
-    }
-
-    public void delete(Long id) {
+    public void deleteById(Long id) {
         Role role = roleDAO.findById(id);
         roleDAO.delete(role);
     }

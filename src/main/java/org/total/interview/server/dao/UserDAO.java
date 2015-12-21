@@ -1,106 +1,89 @@
 package org.total.interview.server.dao;
 
+import org.apache.log4j.Logger;
 import org.hibernate.*;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Restrictions;
 import org.total.interview.server.model.User;
 
 import java.util.List;
 
-public class UserDAO implements DAOInterface<User, Long> {
+public class UserDAO extends GenericDAO<User> implements DAOInterface<User> {
 
-    private Session session;
-    private Transaction transaction;
-
-    private SessionFactory getSessionFactory() {
-        Configuration configuration = new Configuration().configure();
-
-        StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder()
-                .applySettings(configuration.getProperties());
-
-        SessionFactory sessionFactory = configuration.buildSessionFactory(builder.build());
-
-        return sessionFactory;
-    }
-
-    private Session openSessionWithTransaction() {
-        session = getSessionFactory().openSession();
-        transaction = session.beginTransaction();
-        return session;
-    }
-
-    private void closeSessionWithCommitTransaction() {
-        transaction.commit();
-        session.close();
-    }
+    private static final Logger LOGGER = Logger.getLogger(UserDAO.class);
 
     public User findById(Long id) {
-        session = getSessionFactory().openSession();
-        User user = (User) session.get(User.class, id);
-        Hibernate.initialize(user.getRoles());
-        session.close();
+        User user = null;
+        Session session = null;
+        try {
+            session = getSessionFactory().openSession();
+            user = (User) session.get(User.class, id);
+            if (user != null) {
+                Hibernate.initialize(user.getRoles());
+            }
+        } catch (HibernateException e) {
+            LOGGER.error(e, e);
+        } finally {
+            session.close();
+        }
         return user;
     }
 
     public User findByName(String name) {
-        session = getSessionFactory().openSession();
-        Criteria criteria = session.createCriteria(User.class);
-        criteria.add(Restrictions.like("userName", name));
-        User user = (User) criteria.uniqueResult();
-        if (user != null) {
-            Hibernate.initialize(user.getRoles());
+        User user = null;
+        Session session = null;
+        try {
+            session = getSessionFactory().openSession();
+            Criteria criteria = session.createCriteria(User.class);
+            criteria.add(Restrictions.like("userName", name));
+            user = (User) criteria.uniqueResult();
+            if (user != null) {
+                Hibernate.initialize(user.getRoles());
+            }
+        } catch (HibernateException e) {
+            LOGGER.error(e, e);
+        } finally {
+            session.close();
         }
-        session.close();
         return user;
     }
 
     public List<User> findByUserNameAndPassword(String userName, String password) {
-        session = getSessionFactory().openSession();
-        String hql = "FROM User WHERE password = :password AND userName = :userName";
-        Query query = session.createQuery(hql);
-        query.setParameter("password", password);
-        query.setParameter("userName", userName);
-        List<User> users = (List<User>)query.list();
-        if (!users.isEmpty() && users.get(0) != null) {
-            Hibernate.initialize(users.get(0).getRoles());
+        List<User> users = null;
+        Session session = null;
+        try {
+            session = getSessionFactory().openSession();
+            String hql = "FROM User WHERE password = :password AND userName = :userName";
+            Query query = session.createQuery(hql);
+            query.setParameter("userName", userName);
+            query.setParameter("password", password);
+            users = (List<User>) query.list();
+            if (!users.isEmpty() && users.get(0) != null) {
+                Hibernate.initialize(users.get(0).getRoles());
+            }
+        } catch (HibernateException e) {
+            LOGGER.error(e, e);
+        } finally {
+            session.close();
         }
-        session.close();
         return users;
     }
 
     public List<User> findAll() {
-        session = getSessionFactory().openSession();
-        List<User> users = (List<User>) session.createQuery("FROM User").list();
-        session.close();
-        return users;
-    }
-
-    public void persist(User entity) {
-        session = openSessionWithTransaction();
-        session.save(entity);
-        closeSessionWithCommitTransaction();
-    }
-
-    public void update(User entity) {
-        session = openSessionWithTransaction();
-        session.update(entity);
-        closeSessionWithCommitTransaction();
-    }
-
-    public void delete(User entity) {
-        session = openSessionWithTransaction();
-        session.delete(entity);
-        closeSessionWithCommitTransaction();
-    }
-
-    public void deleteAll() {
-        session = openSessionWithTransaction();
-        List<User> entityList = findAll();
-        for (User entity : entityList) {
-            delete(entity);
+        List<User> users = null;
+        Session session = null;
+        try {
+            session = getSessionFactory().openSession();
+            users = (List<User>) session.createQuery("FROM User").list();
+            if (users != null && !users.isEmpty()) {
+                for (User user : users)
+                Hibernate.initialize(user.getRoles());
+            }
+        } catch (HibernateException e) {
+            LOGGER.error(e, e);
+        } finally {
+            session.close();
         }
-        closeSessionWithCommitTransaction();
+        return users;
     }
 
 }

@@ -36,10 +36,6 @@ public class UserService {
         userDAO.persist(entity);
     }
 
-    public void update(User entity) {
-        userDAO.update(entity);
-    }
-
     public void deleteById(Long id) {
         User user = userDAO.findById(id);
         userDAO.delete(user);
