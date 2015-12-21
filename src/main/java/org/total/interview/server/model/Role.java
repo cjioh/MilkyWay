@@ -1,11 +1,15 @@
 package org.total.interview.server.model;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@XmlRootElement
 @Table(
         name = "Role",
         uniqueConstraints = {
@@ -39,6 +43,7 @@ public class Role implements Serializable {
         return roleId;
     }
 
+    @XmlElement
     public void setRoleId(long roleId) {
         this.roleId = roleId;
     }
@@ -49,11 +54,13 @@ public class Role implements Serializable {
         return roleType;
     }
 
+    @XmlElement
     public void setRoleType(RoleType roleType) {
         this.roleType = roleType;
     }
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "roles", cascade = CascadeType.ALL)
+    @XmlTransient
     public Set<User> getUsers() {
         if (this.users == null) {
             this.users = new HashSet<User>();

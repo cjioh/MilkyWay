@@ -1,11 +1,13 @@
 package org.total.interview.server.model;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.*;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@XmlRootElement
 @Table(
         name = "User",
         uniqueConstraints = {
@@ -49,6 +51,7 @@ public class User implements Serializable {
         return userId;
     }
 
+    @XmlElement
     public void setUserId(long userId) {
         this.userId = userId;
     }
@@ -58,6 +61,7 @@ public class User implements Serializable {
         return userName;
     }
 
+    @XmlElement
     public void setUserName(String userName) {
         this.userName = userName;
     }
@@ -67,6 +71,7 @@ public class User implements Serializable {
         return password;
     }
 
+    @XmlElement
     public void setPassword(String password) {
         this.password = password;
     }
@@ -88,6 +93,8 @@ public class User implements Serializable {
         return roles;
     }
 
+    @XmlElementWrapper(name="roles")
+    @XmlElement(name="role")
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
