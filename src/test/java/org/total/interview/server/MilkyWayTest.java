@@ -4,7 +4,6 @@ import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
 import org.junit.Test;
 import org.total.interview.server.dao.GenericDAO;
-import org.total.interview.server.marshall.GenericContentHandler;
 import org.total.interview.server.service.RoleService;
 import org.total.interview.server.service.UserRoleService;
 import org.total.interview.server.service.UserService;
@@ -25,9 +24,6 @@ public class MilkyWayTest {
 
     @Test
     public void test() throws Exception {
-
-        GenericContentHandler handler = new GenericContentHandler();
-        LOGGER.info(handler.marshal(USER_SERVICE.findById(12L)));
 
     }
 
