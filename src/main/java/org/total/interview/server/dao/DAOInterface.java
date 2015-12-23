@@ -10,6 +10,8 @@ public interface DAOInterface<T> {
 
     public void persist(T entity);
 
+    public void update(T entity);
+
     public void delete(T entity);
 
     public void deleteAll();

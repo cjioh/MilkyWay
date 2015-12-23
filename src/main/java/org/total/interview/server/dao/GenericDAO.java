@@ -62,11 +62,27 @@ public abstract class GenericDAO<T> implements DAOInterface<T> {
         try {
             session = getSessionFactory().openSession();
             transaction = session.beginTransaction();
-            session.saveOrUpdate(entity);
+            session.save(entity);
             transaction.commit();
         } catch (HibernateException e) {
             LOGGER.error(e, e);
         } finally {
+            session.close();
+        }
+    }
+
+    public void update(T entity) {
+        Session session = null;
+        Transaction transaction;
+        try {
+            session = getSessionFactory().openSession();
+            transaction = session.beginTransaction();
+            session.update(entity);
+            transaction.commit();
+        } catch (HibernateException e) {
+            LOGGER.error(e, e);
+        } finally {
+            session.clear();
             session.close();
         }
     }
