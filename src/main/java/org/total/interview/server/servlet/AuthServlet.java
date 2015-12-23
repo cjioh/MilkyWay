@@ -1,14 +1,14 @@
 package org.total.interview.server.servlet;
 
 import org.apache.log4j.Logger;
-import org.total.interview.server.model.RoleType;
 import org.total.interview.server.model.User;
 import org.total.interview.server.service.RoleService;
 import org.total.interview.server.service.UserService;
 import org.total.interview.server.util.PasswordManager;
 import org.total.interview.server.util.PasswordManagerImpl;
 
-import javax.servlet.ServletException;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,11 +27,10 @@ public class AuthServlet extends HttpServlet {
     private PasswordManager passwordManager = new PasswordManagerImpl();
 
     private static final UserService USER_SERVICE = new UserService();
-    private static final RoleService ROLE_SERVICE = new RoleService();
 
     public void doPost(HttpServletRequest request,
                        HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
 
         LOGGER.debug("Status: REQ_ENTRY, auth begin\n");
 
@@ -56,13 +55,14 @@ public class AuthServlet extends HttpServlet {
 
             if (users.contains(USER_SERVICE.findByName(login))) {
                 LOGGER.debug("Status: REQ_SUCCESS, auth successful\n");
-                response.setStatus(OK);
 
-                if (users.get(0).getRoles().contains(ROLE_SERVICE.findByRoleType(RoleType.ADMIN))) {
-                    response.sendRedirect("userManagement.jsp");
-                } else {
-                    out.println("Hello " + login + "!\n");
-                }
+                request.setAttribute("roles", users.get(0).getRoles());
+
+                ServletContext context = getServletContext();
+                RequestDispatcher dispatcher = context.getRequestDispatcher("/userinfo");
+                dispatcher.forward(request, response);
+
+                response.setStatus(OK);
             } else {
                 LOGGER.warn("Status: REQ_FAIL, invalid credentials.\n");
                 response.setStatus(UNAUTHORIZED);

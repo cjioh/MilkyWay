@@ -20,6 +20,14 @@
         <url-pattern>/authorization</url-pattern>
     </servlet-mapping>
     <servlet>
+        <servlet-name>userInfo</servlet-name>
+        <servlet-class>org.total.interview.server.servlet.UserInfo</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>userInfo</servlet-name>
+        <url-pattern>/userinfo</url-pattern>
+    </servlet-mapping>
+    <servlet>
         <servlet-name>Jersey Web Application</servlet-name>
         <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
         <init-param>

@@ -8,7 +8,6 @@ import org.total.interview.server.service.UserService;
 import org.total.interview.server.util.PasswordManager;
 import org.total.interview.server.util.PasswordManagerImpl;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,7 +29,7 @@ public class RegisterServlet extends HttpServlet {
 
     public void doPost(HttpServletRequest request,
                        HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
 
         LOGGER.debug("Status: REQ_ENTRY, register begin.\n");
 
@@ -78,7 +77,7 @@ public class RegisterServlet extends HttpServlet {
             try {
                 USER_ROLE_SERVICE.assignRoleByUserNameAndRoleType(login, RoleType.GUEST);
                 LOGGER.debug("Status: REQ_SUCCESS, role \"" + RoleType.GUEST + "\" to user " + login + " assigned successful.\n");
-                        response.setStatus(OK);
+                response.setStatus(OK);
                 out.println("User " + login + " added successfully\n");
             } catch (Exception e) {
                 LOGGER.error("Status: REQ_FAIL, Error while performing register ", e);
