@@ -8,90 +8,67 @@ import org.total.interview.server.service.UserService;
 import org.total.interview.server.util.PasswordManager;
 import org.total.interview.server.util.PasswordManagerImpl;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
+import javax.servlet.http.HttpSession;
 
 public class RegisterServlet extends HttpServlet {
-
-    private static final Logger LOGGER = Logger.getLogger(RegisterServlet.class);
-
-    private static final int INTERNAL_SERVER_ERROR = 500;
-    private static final int UNAUTHORIZED = 401;
-    private static final int OK = 200;
 
     private static final UserService USER_SERVICE = new UserService();
     private static final UserRoleService USER_ROLE_SERVICE = new UserRoleService();
 
+    private static HttpSession SESSION;
+    private static final Logger LOGGER = Logger.getLogger(RegisterServlet.class);
+
+    private static final int INTERNAL_SERVER_ERROR = 500;
+    private static final int OK = 200;
+
     private PasswordManager passwordManager = new PasswordManagerImpl();
 
     public void doPost(HttpServletRequest request,
-                       HttpServletResponse response)
-            throws IOException {
-
-        LOGGER.debug("Status: REQ_ENTRY, register begin.\n");
-
-        PrintWriter out = response.getWriter();
-
-        response.setContentType("text/plain");
-
-        String login = request.getParameter("login");
-        String password = request.getParameter("password");
-
-        if (login == null || login.isEmpty() || password == null || password.isEmpty()) {
-            LOGGER.warn("Status: REQ_FAIL, invalid credentials.\n");
-            response.setStatus(UNAUTHORIZED);
-            out.println("Invalid credentials.\n");
-            return;
-        }
-
+                       HttpServletResponse response) {
         try {
+            LOGGER.debug("Status: REQ_ENTRY, register begin.\n");
+
+            String login = request.getParameter("login");
+            String password = request.getParameter("password");
+
+            ServletContext context = getServletContext();
+            RequestDispatcher dispatcher = null;
+
             LOGGER.debug("Status: REQ_SUCCESS, login=" + login + "\n");
 
-            if (USER_SERVICE.findByName(login) != null) {
+            User user = USER_SERVICE.findByName(login);
+
+            if(user != null) {
                 LOGGER.debug("Status: REQ_FAIL, user " + login + " already exists.\n");
-                response.setStatus(OK);
-                out.println("User " + login + " already exists.\n");
-                return;
+                request.setAttribute("error", "User " + login + " already exists.\n");
+                dispatcher = context.getRequestDispatcher("/register.jsp");
+                dispatcher.forward(request, response);
+            } else {
+                User userToRegister = new User(login, passwordManager.encode(password));
+                try {
+                    USER_SERVICE.persist(userToRegister);
+                    USER_ROLE_SERVICE.assignRoleByUserNameAndRoleType(login, RoleType.GUEST);
+                    LOGGER.debug("Status: REQ_SUCCESS, role \"" + RoleType.GUEST + "\" to user " + login + " assigned successful.\n");
+
+                    SESSION = request.getSession(true);
+                    SESSION.setAttribute("user", userToRegister);
+                    response.setStatus(OK);
+
+                    dispatcher = context.getRequestDispatcher("/index.jsp");
+                    dispatcher.forward(request, response);
+                } catch (Exception e) {
+                    LOGGER.error("Status: REQ_FAIL, Error while performing register.\n");
+                    response.setStatus(INTERNAL_SERVER_ERROR);
+                }
             }
-
-            User userToRegister = new User(login, passwordManager.encode(password));
-
-            if (userToRegister == null) {
-                LOGGER.error("Status: REQ_FAIL, Error while user creation.\n");
-                response.setStatus(INTERNAL_SERVER_ERROR);
-                out.println("Internal Server Error, Error while user creation.\n");
-            }
-
-            try {
-                USER_SERVICE.persist(userToRegister);
-            } catch (Exception e) {
-                LOGGER.error("Status: REQ_FAIL, Error while performing register.\n");
-                response.setStatus(INTERNAL_SERVER_ERROR);
-                out.println("Internal Server Error, Error while performing register.\n");
-                return;
-            }
-
-            try {
-                USER_ROLE_SERVICE.assignRoleByUserNameAndRoleType(login, RoleType.GUEST);
-                LOGGER.debug("Status: REQ_SUCCESS, role \"" + RoleType.GUEST + "\" to user " + login + " assigned successful.\n");
-                response.setStatus(OK);
-                out.println("User " + login + " added successfully\n");
-            } catch (Exception e) {
-                LOGGER.error("Status: REQ_FAIL, Error while performing register ", e);
-                response.setStatus(INTERNAL_SERVER_ERROR);
-                out.println("Internal Server Error, Error while performing register.\n");
-            }
-
         } catch (Exception e) {
             LOGGER.error("Status: REQ_FAIL, Error while performing register ", e);
             response.setStatus(INTERNAL_SERVER_ERROR);
-            out.println("Internal Server Error, Error while performing register.\n");
-        } finally {
-            out.flush();
-            out.close();
         }
     }
 

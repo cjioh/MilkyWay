@@ -47,8 +47,8 @@ public class UserDAO extends GenericDAO<User> implements DAOInterface<User> {
         return user;
     }
 
-    public List<User> findByUserNameAndPassword(String userName, String password) {
-        List<User> users = null;
+    public User findByUserNameAndPassword(String userName, String password) {
+        User user = null;
         Session session = null;
         try {
             session = getSessionFactory().openSession();
@@ -56,16 +56,16 @@ public class UserDAO extends GenericDAO<User> implements DAOInterface<User> {
             Query query = session.createQuery(hql);
             query.setParameter("userName", userName);
             query.setParameter("password", password);
-            users = (List<User>) query.list();
-            if (!users.isEmpty() && users.get(0) != null) {
-                Hibernate.initialize(users.get(0).getRoles());
+            user = (User) query.uniqueResult();
+            if (user != null) {
+                Hibernate.initialize(user.getRoles());
             }
         } catch (HibernateException e) {
             LOGGER.error(e, e);
         } finally {
             session.close();
         }
-        return users;
+        return user;
     }
 
     public List<User> findAll() {

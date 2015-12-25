@@ -2,6 +2,7 @@ package org.total.interview.server;
 
 import org.apache.log4j.Logger;
 import org.hibernate.SessionFactory;
+import org.junit.Assert;
 import org.junit.Test;
 import org.total.interview.server.dao.GenericDAO;
 import org.total.interview.server.service.RoleService;
@@ -24,7 +25,7 @@ public class MilkyWayTest {
 
     @Test
     public void test() throws Exception {
-
+        Assert.assertNull(USER_SERVICE.findByName(null));
     }
 
 }
